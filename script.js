@@ -9,15 +9,15 @@ const LOGO_SVG = `
     <path id="ivTopCurve" d="M 16,64 A 44,44 0 0 1 104,64" fill="none"/>
     <path id="ivBotCurve" d="M 22,74 A 38,38 0 0 0 98,74" fill="none"/>
   </defs>
-  <circle cx="60" cy="60" r="57" fill="#0a0806" stroke="#d9b24c" stroke-width="2"/>
-  <circle cx="60" cy="60" r="47" fill="none" stroke="#d9b24c" stroke-width="1"/>
-  <text font-family="Bebas Neue, sans-serif" font-size="13.5" letter-spacing="2.5" fill="#d9b24c">
+  <circle cx="60" cy="60" r="57" fill="#0a0806" stroke="#ffd400" stroke-width="2"/>
+  <circle cx="60" cy="60" r="47" fill="none" stroke="#ffd400" stroke-width="1"/>
+  <text font-family="Anton, sans-serif" font-size="13.5" letter-spacing="2.5" fill="#ffd400">
     <textPath href="#ivTopCurve" startOffset="50%" text-anchor="middle">IRONVAULT</textPath>
   </text>
-  <text font-family="Bebas Neue, sans-serif" font-size="12" letter-spacing="3" fill="#d9b24c">
+  <text font-family="Anton, sans-serif" font-size="12" letter-spacing="3" fill="#ffd400">
     <textPath href="#ivBotCurve" startOffset="50%" text-anchor="middle">GYM</textPath>
   </text>
-  <g stroke="#d9b24c" stroke-width="2.4" stroke-linecap="round" fill="none">
+  <g stroke="#ffd400" stroke-width="2.4" stroke-linecap="round" fill="none">
     <line x1="38" y1="60" x2="82" y2="60"/>
     <line x1="38" y1="52" x2="38" y2="68"/>
     <line x1="82" y1="52" x2="82" y2="68"/>
@@ -53,14 +53,14 @@ window.addEventListener('scroll', () => {
 
 /* ---------- Hero play / pause ---------- */
 const playToggle = document.getElementById('playToggle');
-const heroBg = document.getElementById('heroBg');
+const heroVideo = document.getElementById('heroVideo');
 const playLabel = document.getElementById('playLabel');
 const playIcon = document.getElementById('playIcon');
 let playing = true;
 
 playToggle?.addEventListener('click', () => {
   playing = !playing;
-  heroBg.classList.toggle('paused', !playing);
+  if (heroVideo) { playing ? heroVideo.play() : heroVideo.pause(); }
   playLabel.textContent = playing ? 'PAUSE' : 'PLAY';
   playIcon.innerHTML = playing
     ? '<path d="M8 5v14l11-7z"/>'
@@ -68,21 +68,20 @@ playToggle?.addEventListener('click', () => {
 });
 
 /* ---------- Gallery slides ---------- */
+/* Swap the "img" path below for your own .png/.jpg files, e.g. 'images/gallery-1.png' */
 const slidesData = [
-  { caption: 'Free Weights Deck',  swatch: ['#2a2010', '#0e0c08'] },
-  { caption: 'Reception',          swatch: ['#3a2c11', '#1a140b'] },
-  { caption: 'Dumbbell Wall',      swatch: ['#221a0d', '#0a0806'] },
-  { caption: 'Cardio Terrace',     swatch: ['#332611', '#120e08'] },
-  { caption: 'Recovery Suite',     swatch: ['#241c10', '#0d0b07'] },
+  { caption: 'Free Weights Deck',  img: 'https://picsum.photos/seed/ironvault-gal1/900/700' },
+  { caption: 'Reception',          img: 'https://picsum.photos/seed/ironvault-gal2/900/700' },
+  { caption: 'Dumbbell Wall',      img: 'https://picsum.photos/seed/ironvault-gal3/900/700' },
+  { caption: 'Cardio Terrace',     img: 'https://picsum.photos/seed/ironvault-gal4/900/700' },
+  { caption: 'Recovery Suite',     img: 'https://picsum.photos/seed/ironvault-gal5/900/700' },
 ];
 
 const galleryTrack = document.getElementById('galleryTrack');
 slidesData.forEach((s, i) => {
   const el = document.createElement('div');
   el.className = 'slide' + (i % 2 === 1 ? ' small' : '');
-  el.innerHTML = `<div class="slide-art" style="background:
-      repeating-linear-gradient(120deg, rgba(217,178,76,.10) 0 2px, transparent 2px 34px),
-      linear-gradient(160deg, ${s.swatch[0]}, ${s.swatch[1]})"></div>
+  el.innerHTML = `<div class="slide-art" style="background-image:url('${s.img}')"></div>
       <span class="slide-caption">${s.caption}</span>`;
   galleryTrack.appendChild(el);
 });
@@ -118,6 +117,19 @@ document.querySelectorAll('.faq-item').forEach(item => {
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   });
+});
+
+/* ---------- Hours dropdown ---------- */
+const hoursBtn = document.getElementById('hoursBtn');
+const hoursPanel = document.getElementById('hoursPanel');
+hoursBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  hoursPanel.classList.toggle('show');
+});
+document.addEventListener('click', (e) => {
+  if (hoursPanel && !hoursPanel.contains(e.target) && e.target !== hoursBtn) {
+    hoursPanel.classList.remove('show');
+  }
 });
 
 /* ---------- Consent nub ---------- */
