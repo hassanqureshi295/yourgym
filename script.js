@@ -138,3 +138,17 @@ const consentPanel = document.getElementById('consentPanel');
 consentNub?.addEventListener('click', () => consentPanel.classList.toggle('show'));
 document.getElementById('consentAccept')?.addEventListener('click', () => consentPanel.classList.remove('show'));
 document.getElementById('consentDecline')?.addEventListener('click', () => consentPanel.classList.remove('show'));
+
+
+
+/* ---------- Amenity cards: tap-to-flip on touch devices ---------- */
+const noHover = window.matchMedia('(hover: none)').matches;
+if (noHover) {
+  document.querySelectorAll('.amenities .a-cell:not(.a-cell--headline)').forEach(cell => {
+    cell.addEventListener('click', () => {
+      const wasOpen = cell.classList.contains('flipped');
+      document.querySelectorAll('.amenities .a-cell.flipped').forEach(c => c.classList.remove('flipped'));
+      if (!wasOpen) cell.classList.add('flipped');
+    });
+  });
+}
